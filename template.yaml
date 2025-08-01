@@ -23,7 +23,8 @@ Resources:
       AutoPublishAlias: live
       DeploymentPreference:
         Type: Canary10Percent5Minutes
-        Alarms: []
+        Alarms:
+          - !Ref MyCloudWatchAlarm
         Hooks: {}
       Architectures:
       - x86_64
@@ -33,6 +34,21 @@ Resources:
           Properties:
             Path: /hello
             Method: get
+  
+  MyCloudWatchAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: MyLambdaErrorAlarm
+      MetricName: Errors
+      Namespace: AWS/Lambda
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref HelloWorldFunction
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
