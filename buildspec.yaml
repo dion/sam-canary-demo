@@ -9,7 +9,8 @@ phases:
   build:
     commands:
       - sam build
-      - sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --s3-bucket lab-hello-world-code-pipeline --stack-name sam-pipeline-test
+      - sam package --s3-bucket lab-hello-world-code-pipeline --output-template-file packaged.yaml
+      # - sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --s3-bucket lab-hello-world-code-pipeline --stack-name sam-pipeline-test
 artifacts:
   files:
     - packaged.yaml
